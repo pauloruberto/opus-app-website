@@ -11,3 +11,4 @@ This is the marketing site for Opus, an iPhone app for following Apple Music art
 - The privacy policy text is Paulo's wording. Don't rephrase it. Keep Paulo's name out of the page bodies; the footer copyright is the only place it appears.
 - Once Opus is on the App Store, swap the TestFlight links for the App Store link and add `<meta name="apple-itunes-app">`.
 - It's hosted on GitHub Pages at https://opusapp.ca (the `CNAME` file). Canonical and Open Graph URLs are absolute on that domain.
+- Link to pages without `.html` (`privacy`, `support`); GitHub Pages serves `privacy.html` at `/privacy`. The local preview uses `npx serve`, which does the same.
