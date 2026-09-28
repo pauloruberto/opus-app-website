@@ -166,8 +166,16 @@ a {
   text-wrap: balance;
 }
 
-.button {
+/* Keeps the note close to the button, outside .hero-copy's larger gap. */
+.hero-cta {
   margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.button {
   display: inline-flex;
   align-items: center;
   height: 50px;
@@ -182,6 +190,13 @@ a {
 
 .button:hover {
   background: var(--accent-hover);
+}
+
+.hero-note {
+  font-size: 14px;
+  line-height: 1.43;
+  color: var(--text-2);
+  letter-spacing: -.01em;
 }
 
 /* ---------- Features ---------- */
@@ -350,6 +365,16 @@ a {
   text-wrap: balance;
 }
 
+.closing-sub {
+  max-width: 620px;
+  margin-top: -8px;
+  font-size: 19px;
+  line-height: 1.42;
+  color: var(--text-2);
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+
 .text-link {
   display: inline-flex;
   align-items: center;
@@ -431,8 +456,24 @@ a {
   letter-spacing: -.015em;
 }
 
+.page h3 {
+  margin-top: 32px;
+  font-size: 19px;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+
+.page h2 + h3 {
+  margin-top: 24px;
+}
+
 .page p {
   margin-top: 16px;
+}
+
+.page h3 + p {
+  margin-top: 8px;
 }
 
 .page .lede + p {
@@ -542,6 +583,11 @@ a {
   .closing h2 {
     font-size: clamp(48px, 5.4vw, 64px);
     line-height: 1.05;
+  }
+
+  .closing-sub {
+    font-size: 21px;
+    line-height: 1.38;
   }
 
   .text-link {
