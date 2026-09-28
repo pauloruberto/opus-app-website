@@ -4,8 +4,9 @@
     {
       "name": "site",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["--yes", "serve", "-l", "8417"],
-      "port": 8417
+      "runtimeArgs": ["--yes", "serve"],
+      "port": 8417,
+      "autoPort": true
     }
   ]
 }

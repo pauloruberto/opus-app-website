@@ -19,11 +19,48 @@
   --bezel-ring: #3A3A3C;
   --dot-off: #D2D2D7;
   --dot-on: #1D1D1F;
+  --device-shadow:
+    0 24px 48px rgba(0, 0, 0, .10),
+    0 6px 14px rgba(0, 0, 0, .05);
+  /* The light icon is white to its edge, so the shadows (which follow the icon's
+     rounded shape) and a faint outline separate it from the page. */
+  --icon-shadow:
+    drop-shadow(0 0 .5px rgba(0, 0, 0, .18))
+    drop-shadow(0 2px 5px rgba(0, 0, 0, .06))
+    drop-shadow(0 9px 18px rgba(0, 0, 0, .12));
+  --icon-shadow-large:
+    drop-shadow(0 0 .5px rgba(0, 0, 0, .18))
+    drop-shadow(0 3px 7px rgba(0, 0, 0, .06))
+    drop-shadow(0 12px 24px rgba(0, 0, 0, .12));
 
   --content: 1120px;
   --gutter: 24px;
 
-  color-scheme: light;
+  color-scheme: light dark;
+}
+
+/* Dark mode follows the visitor's system setting. Shadows don't show on black,
+   so the device and icon get a faint light edge instead. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000;
+    --bg-alt: #161617;
+    --text: #F5F5F7;
+    --text-2: #A1A1A6;
+    --text-3: #6E6E73;
+    --hairline: #2C2C2E;
+    --footer-rule: #424245;
+    --footer-link: #D2D2D7;
+    --link: #2997FF;
+    --link-hover: #5CB0FF;
+    --bezel: #1D1D1F;
+    --bezel-ring: #48484A;
+    --dot-off: #424245;
+    --dot-on: #F5F5F7;
+    --device-shadow: 0 0 0 .5px rgba(255, 255, 255, .08);
+    --icon-shadow: drop-shadow(0 0 .5px rgba(255, 255, 255, .28));
+    --icon-shadow-large: var(--icon-shadow);
+  }
 }
 
 *,
@@ -126,15 +163,10 @@ a {
   height: 112px;
 }
 
-/* The light icon is white to its edge, so the shadows (which follow the icon's
-   rounded shape) and a faint outline separate it from the page. */
 .app-icon img {
   width: 100%;
   height: 100%;
-  filter:
-    drop-shadow(0 0 .5px rgba(0, 0, 0, .18))
-    drop-shadow(0 2px 5px rgba(0, 0, 0, .06))
-    drop-shadow(0 9px 18px rgba(0, 0, 0, .12));
+  filter: var(--icon-shadow);
 }
 
 .hero-copy {
@@ -256,8 +288,7 @@ a {
   background: var(--bezel);
   box-shadow:
     inset 0 0 0 1.5px var(--bezel-ring),
-    0 24px 48px rgba(0, 0, 0, .10),
-    0 6px 14px rgba(0, 0, 0, .05);
+    var(--device-shadow);
 }
 
 .screen {
@@ -525,10 +556,7 @@ a {
   }
 
   .app-icon img {
-    filter:
-      drop-shadow(0 0 .5px rgba(0, 0, 0, .18))
-      drop-shadow(0 3px 7px rgba(0, 0, 0, .06))
-      drop-shadow(0 12px 24px rgba(0, 0, 0, .12));
+    filter: var(--icon-shadow-large);
   }
 
   .hero-copy {
