@@ -19,6 +19,8 @@
   --bezel-ring: #3A3A3C;
   --dot-off: #D2D2D7;
   --dot-on: #1D1D1F;
+  --paddle: #E8E8ED;
+  --paddle-hover: #DCDCE1;
   --device-shadow:
     0 24px 48px rgba(0, 0, 0, .10),
     0 6px 14px rgba(0, 0, 0, .05);
@@ -57,6 +59,8 @@
     --bezel-ring: #48484A;
     --dot-off: #424245;
     --dot-on: #F5F5F7;
+    --paddle: #333336;
+    --paddle-hover: #424245;
     --device-shadow: 0 0 0 .5px rgba(255, 255, 255, .08);
     --icon-shadow: drop-shadow(0 0 .5px rgba(255, 255, 255, .28));
     --icon-shadow-large: var(--icon-shadow);
@@ -237,7 +241,7 @@ a {
   border-top: 1px solid var(--hairline);
 }
 
-/* Phone: a horizontal snap carousel, one feature per slide. */
+/* A horizontal snap carousel at every width. On phones one feature is centred per slide. */
 .features-list {
   position: relative;
   margin: 0;
@@ -372,6 +376,37 @@ a {
 
 .dot.is-active {
   background: var(--dot-on);
+}
+
+/* Previous / next buttons for mouse users, shown from tablet up. */
+.paddles {
+  display: none;
+}
+
+.paddle {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--paddle);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.paddle:hover {
+  background: var(--paddle-hover);
+}
+
+.paddle:disabled {
+  opacity: .4;
+  cursor: default;
+}
+
+.paddle:disabled:hover {
+  background: var(--paddle);
 }
 
 /* ---------- Closing ---------- */
@@ -579,28 +614,37 @@ a {
     border-radius: 26px;
   }
 
-  /* Tablet: 2 × 2 grid. The 24px floor lets four 264px columns fit from 1200px up. */
+  /* Tablet and desktop: the same scroller, but slides snap to the content edge
+     and run off the right of the page. --inset matches .wrap. */
   .features {
-    padding: 120px max(24px, calc((100% - 1184px) / 2)) 144px;
+    padding-block: 120px 144px;
   }
 
   .features-list {
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(2, 264px);
-    justify-content: center;
-    column-gap: 64px;
-    row-gap: 80px;
-    overflow: visible;
+    --inset: max(var(--gutter), calc((100% - var(--content)) / 2));
+    gap: 40px;
+    scroll-padding-inline: var(--inset);
   }
 
+  /* Spacer + 40px gap = --inset. */
   .features-list::before,
   .features-list::after {
-    content: none;
+    flex-basis: max(0px, calc(var(--inset) - 40px));
+  }
+
+  .feature {
+    scroll-snap-align: start;
   }
 
   .dots {
     display: none;
+  }
+
+  .paddles {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
   }
 
   .closing {
@@ -649,23 +693,17 @@ a {
   }
 }
 
-@media (min-width: 1200px) {
-  .features-list {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    justify-items: center;
-    column-gap: 32px;
-  }
-}
-
 /* ---------- Motion ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
-  html {
+  html,
+  .features-list {
     scroll-behavior: smooth;
   }
 
   .button,
-  .dot {
+  .dot,
+  .paddle {
     transition: background-color .2s ease;
   }
 }

@@ -1,16 +1,24 @@
-// Phone feature carousel: keep the dots in step with the scroll position.
+// Feature carousel: keep the dots and paddles in step with the scroll position.
 (() => {
   const list = document.querySelector('.features-list');
   const dots = document.querySelectorAll('.dot');
+  const paddles = document.querySelectorAll('.paddle');
   if (!list || !dots.length) return;
 
   const slides = Array.from(list.querySelectorAll('.feature'));
-  const phone = window.matchMedia('(max-width: 799px)');
   let active = 0;
   let frame = 0;
 
   const update = () => {
     frame = 0;
+
+    // Paddles: off at either end of the scroller.
+    const max = list.scrollWidth - list.clientWidth;
+    paddles.forEach((paddle) => {
+      paddle.disabled = paddle.dataset.step < 0 ? list.scrollLeft <= 1 : list.scrollLeft >= max - 1;
+    });
+
+    // Dots (phone only): the slide nearest the centre.
     const centre = list.scrollLeft + list.clientWidth / 2;
     let nearest = 0;
     let best = Infinity;
@@ -27,20 +35,23 @@
     active = nearest;
   };
 
-  list.addEventListener('scroll', () => {
+  const schedule = () => {
     if (!frame) frame = requestAnimationFrame(update);
-  }, { passive: true });
-
-  // Only the phone carousel scrolls, so only then make it a keyboard tab stop.
-  const syncMode = () => {
-    if (phone.matches) {
-      list.tabIndex = 0;
-      list.setAttribute('aria-label', 'Features, scrolls sideways');
-    } else {
-      list.removeAttribute('tabindex');
-      list.removeAttribute('aria-label');
-    }
   };
-  phone.addEventListener('change', syncMode);
-  syncMode();
+
+  list.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule);
+
+  // Each paddle moves by as many whole slides as fit in view; snapping lines them up.
+  paddles.forEach((paddle) => {
+    paddle.addEventListener('click', () => {
+      const step = slides[1].offsetLeft - slides[0].offsetLeft;
+      const gap = step - slides[0].offsetWidth;
+      const inset = slides[0].offsetLeft;
+      const perPage = Math.max(1, Math.floor((list.clientWidth - inset + gap) / step));
+      list.scrollBy({ left: paddle.dataset.step * step * perPage });
+    });
+  });
+
+  update();
 })();
